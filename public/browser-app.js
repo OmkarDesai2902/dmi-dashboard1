@@ -10,6 +10,7 @@ const logoutBtnDOM = document.querySelector('#logout-btn')
 
 dmiFormDOM.addEventListener('submit', async (e) => {
     e.preventDefault()
+    console.log(`browserapp.js : seacrh submit is clicked `)
     checkS()
     const PS_ID = dmiInputDOM.value
     showDmis(PS_ID)
@@ -23,6 +24,7 @@ const showDmis = async (PS_ID) => {
     try{
 
         const { data : { recordset }} = await axios.get(`/api/v1/dmis/${PS_ID}`)
+        console.log(`browserapp.js : inside showDmi fn data : ${recordset}`)
         if(recordset.length <1){
             DmisDOM.innerHTML = ` <p> No FLS / DMIs in TBL_FLS_MASTER for mentioned Code__C : ${PS_ID}</p> `
             loadingDOM.style.visibility = 'hidden'
@@ -75,6 +77,7 @@ const showDmis = async (PS_ID) => {
         DmisDOM.innerHTML = allDmis
     }
     catch(error) {
+        console.log(`browserapp.js : Error inside showDmi fn error : ${error}`)
         DmisDOM.innerHTML = ` <p> Some error is there : ${error} </p> `
     }
     loadingDOM.style.visibility = 'hidden'
@@ -86,6 +89,7 @@ const showDmisHrms = async (PS_ID) => {
     loadingDOM.style.visibility = 'visible'
     try{
         const { data : { recordset }} = await axios.get(`/api/v1/dmis/hrms/${PS_ID}`)
+        console.log(`browserapp.js : inside showDmihrms fn data : ${recordset}`)
         if(recordset.length <1){
             DmisHrmsDOM.innerHTML = ` <p> No FLS / DMIs in TBL_HRMS_SAP_JOINING_DATA for mentioned Code__C : ${PS_ID}</p> `
             loadingDOM.style.visibility = 'hidden'
@@ -138,6 +142,7 @@ const showDmisHrms = async (PS_ID) => {
         DmisHrmsDOM.innerHTML += allDmis1
     }
     catch(error) {
+        console.log(`browserapp.js :ERROR inside showDmiHrms fn data : ${error}`)
         DmisHrmsDOM.innerHTML = ` <p> Some error is there : ${error} </p> `
     }
     loadingDOM.style.visibility = 'hidden'
@@ -147,37 +152,39 @@ const showDmisHrms = async (PS_ID) => {
 //Logout 
 
 logoutBtnDOM.addEventListener('click', async ()=>{
-
+    console.log(`browserapp.js : log out button clicked `)
     try {
         let logoutAxios = await axios.get(`/logout`)
         let flag = logoutAxios.data.loggedOut
-        console.log(flag)
+        console.log(`browserapp.js : inside logout fn loggedOut : ${flag}`)
 
         if(flag){
+            console.log(`browserapp.js : inside logout fn loggedout is true : ${flag}`)
             window.location.href = `auth.html`
         }
         
     } catch (error) {
-        
+        console.log(`browserapp.js : error inside logout fn error : ${error}`)
     }
 
 })
 
 
 const checkS = async () => { 
-    
+    console.log(`browserapp.js : inside checkS fn `)
     try {
         let dataAxios  = await axios.get(`/checkS`)
         let flag = dataAxios.data.loggedIn
-
+        console.log(`browserapp.js : inside checkS fn loggedin : ${flag}`)
         if(!flag){
+            console.log(`browserapp.js : inside checkS fn looggedIn is false : ${flag}`)
             alert('Session Expired. Please Login again')
             window.location.href = `auth.html`
         }
         
 
     } catch (error) {
-        console.log(error)
+        console.log(`browserapp.js : Error inside CheckS fn error : ${error}`)
     }
 
 

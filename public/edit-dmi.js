@@ -15,8 +15,10 @@ const dmiIDSearched = paramStr.split("/")[0]
 
 const showTasks = async () => {
     loadingDOMedit.style.visibility = 'visible'
+    console.log(`edit-dmi.js : inside showDmi fn  `)
     try{
         const { data : { recordset }} = await axios.get(`/api/v1/dmis/${paramStr}`)
+        console.log(`edit-dmi.js : inside showDmi fn  data : ${recordset}`)
         if(recordset.length <1){
             DmisDOM.innerHTML = ` <p> ${dmiIDSearched} not present in MAS (TBL_FLS_MASTER)</p> `
             loadingDOMedit.style.visibility = 'hidden'
@@ -55,6 +57,7 @@ const showTasks = async () => {
 
     }
     catch(error) {
+        console.log(`edit-dmi.js : Error inside showDmi fn  error : ${error}`)
         DmisDOM.innerHTML = ` <p> Some error is there : ${error} </p> `
     }
 
@@ -67,6 +70,8 @@ showTasks()
 editFormDOM.addEventListener('submit', async (e) => {
     
     e.preventDefault()
+    console.log(`edit-dmi.js : inside updateDmi fn data `)
+
     var updateObject = {  }
 
     let inputs = DmisDOM.getElementsByTagName('input');
@@ -80,13 +85,16 @@ editFormDOM.addEventListener('submit', async (e) => {
     try {
         if(confirm("Do yo want to Edit entered details")){
             const updateAxios = axios.patch(`/api/v1/dmis/${paramStr}`,updateObject)
+            console.log(`edit-dmi.js : inside updateDmi fn updated success data : ${updateObject}`)
             window.alert("Updation Successful");
             window.location.href = `index.html`;
         }
         else{
             //dialogue box cancel
+            console.log(`edit-dmi.js : inside updateDmi fn not updated data : ${updateObject}`)
         }
     } catch (error) {
+        console.log(`edit-dmi.js :error inside updateDmi fn error : ${error}`)
         DmisDOM.innerHTML = ` <p> Error : ${error} </p> `
     }
 
@@ -99,16 +107,19 @@ editFormDOM.addEventListener('submit', async (e) => {
 function dmiDeleteFunction() {
 
     try {
-        
+        console.log(`edit-dmi.js : inside dmiDelete fn data `)
         if(confirm(`Do yo want to Delete ${dmiIDSearched}`)){
             const deleteAxios = axios.delete(`/api/v1/dmis/${paramStr}`)
+            console.log(`edit-dmi.js : inside dmiDelete fn data success delete `)
             window.alert(`${dmiIDSearched} Deleted Successfully`);
             window.location.href = `index.html`;
         }
         else{
             //dialogue box cancel
+            console.log(`edit-dmi.js : failed inside dmiDelete fn data failed delete `)
         }
     } catch (error) {
+        console.log(`edit-dmi.js : error inside dmiDelete fn data error delete : ${error} `)
         DmisDOM.innerHTML = ` <p> Error : ${error} </p> `
     }
 
@@ -120,16 +131,17 @@ const checkS = async () => {
     try {
         let dataAxios  = await axios.get(`/checkS`)
         let flag = dataAxios.data.loggedIn
-        // console.log(flag)
-
+        console.log(`edit-dmi.js : inside checkS fn flag : ${flag} `)
+        
         if(!flag){
+            console.log(`edit-dmi.js :  inside checkS fn flag false : ${flag} `)
             alert('Session Expired. Please Login again')
             window.location.href = `auth.html`
         }
         
 
     } catch (error) {
-        console.log(error)
+        console.log(`edit-dmi.js : error inside checkS fn error : ${error} `)
     }
 
 

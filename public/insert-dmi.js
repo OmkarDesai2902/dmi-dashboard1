@@ -17,6 +17,7 @@ submitFormDOM.style.display = 'none'
 
 branchSearchButton.addEventListener('click',(event) => {
     event.preventDefault()
+    console.log(`insert-dmi.js : inside baranchSearch fn  `)
     checkS()
     const BranchID = dmiInputDOM.value
     if(BranchID == '' || BranchID == 'null'){
@@ -35,9 +36,10 @@ branchSearchButton.addEventListener('click',(event) => {
 
 const showTextBox = async(BranchID) => {
     loadingDOM.style.visibility = 'visible'
-
+    console.log(`insert-dmi.js : inside showInputforInsert fn branchID : ${BranchID} `)
     try {
         const { data : { recordset }} = await axios.get(`/api/v1/dmis/branch/${BranchID}`)
+        console.log(`insert-dmi.js : inside showInputforInsert fn branchData : ${recordset} `)
         if(recordset.length <1){
             DmisDOM.innerHTML = ` <p> No FLS / DMIs to show for mentioned Branch ${BranchID}</p> `
             loadingDOMedit.style.visibility = 'hidden'
@@ -83,6 +85,7 @@ const showTextBox = async(BranchID) => {
 
 
     } catch (error) {
+        console.log(`insert-dmi.js :Error inside showInputforInsert fn error : ${error} `)
         DmisDOM.innerHTML = ` <p> Some error is there : ${error} </p> `
     }
     loadingDOMedit.style.visibility = 'hidden'
@@ -95,7 +98,7 @@ const showTextBox = async(BranchID) => {
 
 submitFormDOM.addEventListener('submit', async (e) =>{
     e.preventDefault()
-
+    console.log(`insert-dmi.js : inside submitforInsert fn `)
     var insertObject = {  }
 
     let inputs = insertFormDiv.getElementsByTagName('input');
@@ -109,15 +112,17 @@ submitFormDOM.addEventListener('submit', async (e) =>{
     try {
         if(confirm("Do yo want to Insert entered details")){
             const insertAxios = axios.post(`/api/v1/dmis/`,insertObject)
+            console.log(`insert-dmi.js : inside submitforInsert fn inserted success  `)
             window.alert("Insertion Successful");
             window.location.href = `index.html`;
         }
         else{
             //dialogue box cancel
+            console.log(`insert-dmi.js : fail inside submitforInsert fn inserted fail  `)
         }
     } catch (error) {
         DmisDOM.innerHTML = ` <p> Error : ${error} </p> `
-        console.log(error)
+        console.log(`insert-dmi.js : Error inside submitforInsert fn inserted fail Error : ${error} `)
     }
 
 
@@ -127,19 +132,22 @@ submitFormDOM.addEventListener('submit', async (e) =>{
 
 
 const checkS = async () => { 
-    
+    console.log(`insert-dmi.js : inside checkS fn   `)
     try {
         let dataAxios  = await axios.get(`/checkS`)
         let flag = dataAxios.data.loggedIn
         // console.log(flag)
+        console.log(`insert-dmi.js : inside checkS fn loggedin flag : ${flag} `)
 
         if(!flag){
+            console.log(`insert-dmi.js :  inside checkS fn loggedin flag false: ${flag} `)
             alert('Session Expired. Please Login again')
             window.location.href = `auth.html`
         }
         
 
     } catch (error) {
+        console.log(`insert-dmi.js : Error inside checkS fn error : ${error} `)
         console.log(error)
     }
 
